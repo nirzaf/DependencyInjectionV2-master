@@ -1,0 +1,36 @@
+﻿@model List<Post>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@inject PersonalBlog.Interface.IAuthorizer authorizer;
+
+@if (authorizer.IsAuthorized())
+{
+    <div class="m-1">
+        <a asp-action="CreatePost" class="btn btn-primary">Create Post</a>
+    </div>
+}
+<div class="card-columns card-group">
+    @{
+        foreach (var post in Model)
+        {
+            var content = post.Content.Length > 300 ? post.Content.Substring(0, 300) + " ..." : post.Content;
+
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@post.Title</h5>
+                    <h6>published on @post.PostDateTime.ToShortDateString()</h6>
+                    <p class="card-text">@content</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted"><a asp-action="#">See More...</a></small>
+
+                </div>
+
+            </div>
+
+        }
+    }
+</div>
